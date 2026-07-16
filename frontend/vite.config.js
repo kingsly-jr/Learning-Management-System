@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://learning-management-system-t7bn.onrender.com',
         changeOrigin: true,
         secure: false
       }

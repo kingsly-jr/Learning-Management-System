@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.PROD ? 'https://learning-management-system-backend-xjuy.onrender.com/api' : '/api';
+const API_BASE = import.meta.env.PROD ? 'https://learning-management-system-t7bn.onrender.com/api' : '/api';
 
 export async function apiFetch(path, options = {}) {
   const token = localStorage.getItem('lms_token');
