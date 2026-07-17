@@ -5,8 +5,17 @@ export default function Sidebar({ user, currentPage, currentParams, navigate, lo
   const { username, role } = user;
   const [firstCourseId, setFirstCourseId] = useState(null);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
+    // Fetch profile to get thumbnail url
+    apiFetch('/users/profile')
+      .then(data => {
+        if (data && data.thumbnailUrl) {
+          setAvatarUrl(data.thumbnailUrl);
+        }
+      }).catch(() => {});
+
     if (role === 'INSTRUCTOR') {
       apiFetch('/courses').then(data => {
         if (data && data.length > 0) {
@@ -84,7 +93,13 @@ export default function Sidebar({ user, currentPage, currentParams, navigate, lo
         onMouseLeave={(e) => { if (role === 'STUDENT') e.currentTarget.style.backgroundColor = 'transparent'; }}
       >
         <div className="flex items-center gap-3">
-          <div className="user-avatar" id="user-avatar">{username[0].toUpperCase()}</div>
+          <div className="user-avatar" id="user-avatar" style={{ overflow: 'hidden' }}>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              username[0].toUpperCase()
+            )}
+          </div>
           <div className="user-info">
             <div className="name truncate" id="sidebar-username">{username}</div>
             <span className={`role-badge ${role.toLowerCase()}`} id="sidebar-role-badge">{role}</span>
