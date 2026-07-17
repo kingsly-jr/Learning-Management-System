@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
         Optional<Student> studentOpt = studentRepository.findByUsername(username);
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();
-            if (request.getUsername() != null) student.setUsername(request.getUsername());
+            // Username is NOT updated here — it's tied to the JWT token identity
             if (request.getEmail() != null) student.setEmail(request.getEmail());
             if (request.getPassword() != null && !request.getPassword().isEmpty()) {
                 student.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
         Optional<Instructor> instOpt = instructorRepository.findByUsername(username);
         if (instOpt.isPresent()) {
             Instructor inst = instOpt.get();
-            if (request.getUsername() != null) inst.setUsername(request.getUsername());
+            // Username is NOT updated here — it's tied to the JWT token identity
             if (request.getEmail() != null) inst.setEmail(request.getEmail());
             if (request.getPassword() != null && !request.getPassword().isEmpty()) {
                 inst.setPassword(passwordEncoder.encode(request.getPassword()));

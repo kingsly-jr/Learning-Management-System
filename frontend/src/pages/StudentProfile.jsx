@@ -88,6 +88,10 @@ export default function StudentProfile({ user, navigate, addToast }) {
     try {
       const payload = { ...formData };
       
+      // Never send the username in the update payload. 
+      // If the old Render backend receives it, it will update it and break the JWT token!
+      delete payload.username;
+      
       if (!payload.password) {
         delete payload.password;
         delete payload.confirmPassword;
@@ -158,8 +162,8 @@ export default function StudentProfile({ user, navigate, addToast }) {
                 <input type="text" className="form-input" name="fullName" value={formData.fullName || ''} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label>Username</label>
-                <input type="text" className="form-input" name="username" value={formData.username || ''} onChange={handleChange} required minLength="3" />
+                <label>Username <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>(cannot be changed)</span></label>
+                <input type="text" className="form-input" value={formData.username || ''} readOnly disabled style={{ opacity: 0.6, cursor: 'not-allowed' }} />
               </div>
               <div className="form-group">
                 <label>Phone Number</label>
@@ -271,6 +275,7 @@ export default function StudentProfile({ user, navigate, addToast }) {
               📌 Account Details (Read-Only)
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', background: 'rgba(255,255,255,0.02)', padding: '20px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+              <div><strong>Username:</strong> <span style={{ color: 'var(--text-muted)', marginLeft: '5px' }}>{formData.username}</span></div>
               <div><strong>Email Address:</strong> <span style={{ color: 'var(--text-muted)', marginLeft: '5px' }}>{formData.email}</span></div>
               <div><strong>Student ID:</strong> <span style={{ color: 'var(--text-muted)', marginLeft: '5px' }}>#{formData.id}</span></div>
               <div style={{ gridColumn: '1 / -1' }}><strong>Registration Date:</strong> <span style={{ color: 'var(--text-muted)', marginLeft: '5px' }}>{formData.joinedOn ? new Date(formData.joinedOn).toLocaleDateString() : 'N/A'}</span></div>
