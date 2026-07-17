@@ -229,7 +229,8 @@ public class AppDatabaseInitializer implements CommandLineRunner {
         Category cyber  = seedCategory("Cyber Security", "Ethical hacking");
         Category uiux   = seedCategory("UI/UX", "User interface design and Figma");
 
-        // --- DEMO DATA SEEDING ENABLED ---
+        // --- DEMO DATA SEEDING DISABLED ---
+        /*
         Instructor jose  = seedInstructor("jose", "jose@learnsphere.com", "pass@123", instructorRole);
         Instructor maria = seedInstructor("maria", "maria@learnsphere.com", "pass@123", instructorRole);
         Student mohan    = seedStudent("mohan", "mohan@learnsphere.com", "pass@123", studentRole);
@@ -245,6 +246,7 @@ public class AppDatabaseInitializer implements CommandLineRunner {
         seedCourse("React Frontend Development", "Modern web apps with React", 
                    "Master React hooks, components...", 149.99, 
                    "https://images.unsplash.com/photo-1633356122544-f134324a6cee", maria, react);
+        */
 
         System.out.println("=================================================");
         System.out.println("✅ SEEDING COMPLETE");
