@@ -249,6 +249,32 @@ export default function AdminDashboardMock({ stats, users, courses, categories, 
         ))}
       </div>
 
+      {/* ═══ ROW 2: REVENUE CARDS ═══ */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px' }}>
+        {[
+          { icon: '💰', value: `₹${(stats?.totalCourseSales || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, label: 'Total Sales', bg: 'rgba(234,179,8,0.15)', color: '#eab308' },
+          { icon: '🏛️', value: `₹${(stats?.totalGstCollected || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, label: 'GST Collected', bg: 'rgba(239,68,68,0.15)', color: '#ef4444' },
+          { icon: '📈', value: `₹${(stats?.totalNetRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, label: 'Net Revenue', bg: 'rgba(59,130,246,0.15)', color: '#3b82f6' },
+          { icon: '💼', value: `₹${(stats?.totalPlatformEarnings || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, label: 'Platform (80%)', bg: 'rgba(16,185,129,0.15)', color: '#10b981' },
+          { icon: '👨‍🏫', value: `₹${(stats?.totalInstructorPayout || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, label: 'Instructors (20%)', bg: 'rgba(139,92,246,0.15)', color: '#8b5cf6' },
+        ].map((card, i) => (
+          <div key={i} className="stat-card" style={{
+            background: 'var(--bg-card)',
+            border: `1px solid ${card.bg}`, position: 'relative', overflow: 'hidden', padding: '20px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div style={{
+                width: '36px', height: '36px', borderRadius: '10px',
+                background: card.bg, display: 'flex', alignItems: 'center',
+                justifyContent: 'center', fontSize: '18px'
+              }}>{card.icon}</div>
+              <div className="stat-label" style={{ margin: 0 }}>{card.label}</div>
+            </div>
+            <div className="stat-value" style={{ fontSize: '20px', color: card.color }}>{card.value}</div>
+          </div>
+        ))}
+      </div>
+
       {/* ═══ MASONRY 2-COLUMN LAYOUT ═══ */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'stretch' }}>
 

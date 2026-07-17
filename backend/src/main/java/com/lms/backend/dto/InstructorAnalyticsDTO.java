@@ -23,4 +23,17 @@ public class InstructorAnalyticsDTO {
 
     public long getUnansweredQuestions() { return unansweredQuestions; }
     public void setUnansweredQuestions(long unansweredQuestions) { this.unansweredQuestions = unansweredQuestions; }
+
+    private double totalEarnings;
+    private double todayEarnings;
+    private double monthlyEarnings;
+
+    public double getTotalEarnings() { return totalEarnings; }
+    public void setTotalEarnings(double totalEarnings) { this.totalEarnings = totalEarnings; }
+
+    public double getTodayEarnings() { return todayEarnings; }
+    public void setTodayEarnings(double todayEarnings) { this.todayEarnings = todayEarnings; }
+
+    public double getMonthlyEarnings() { return monthlyEarnings; }
+    public void setMonthlyEarnings(double monthlyEarnings) { this.monthlyEarnings = monthlyEarnings; }
 }

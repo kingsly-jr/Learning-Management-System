@@ -10,7 +10,7 @@ public interface UserService {
     List<UserDTO> getPublicInstructors();
     UserDTO updateUserRole(Long userId, String role);
     UserDTO updateUser(Long userId, com.lms.backend.dto.RegisterRequest request);
-    UserDTO updateCurrentUser(String username, com.lms.backend.dto.RegisterRequest request);
+    UserDTO updateCurrentUser(String username, com.lms.backend.dto.UpdateProfileRequest request);
     void deleteUser(Long userId);
     List<EnrollmentDTO> getStudentEnrollments(Long studentId);
     List<EnrollmentDTO> getInstructorEnrollmentsForAdmin(Long instructorId);

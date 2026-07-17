@@ -175,12 +175,20 @@ public class AppDatabaseInitializer implements CommandLineRunner {
         System.out.println("=================================================");
         System.out.println("⚡ AppDatabaseInitializer starting...");
 
-        // Safely alter obsolete columns to allow NULLs (bypassing foreign key drop errors)
         try {
-            jdbc.execute("ALTER TABLE quizzes MODIFY course_id BIGINT NULL");
-            System.out.println("⚡ Allowed NULLs on obsolete course_id in quizzes table");
-        } catch (Exception e) { System.out.println("⚡ Note: " + e.getMessage()); }
-
+            jdbc.execute("ALTER TABLE courses ALTER COLUMN thumbnail_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE lessons ALTER COLUMN video_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE categories ALTER COLUMN thumbnail_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE students ALTER COLUMN thumbnail_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE instructors ALTER COLUMN thumbnail_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE admin_users ALTER COLUMN thumbnail_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE instructors ALTER COLUMN portfolio_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE instructors ALTER COLUMN resume_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE assignments ALTER COLUMN file_url TYPE TEXT");
+            jdbc.execute("ALTER TABLE assignment_submissions ALTER COLUMN submission_url TYPE TEXT");
+            System.out.println("⚡ Altered URL columns to TEXT to support base64");
+        } catch (Exception e) { System.out.println("⚡ Note (Alter URL columns): " + e.getMessage()); }
+        
         try {
             jdbc.execute("DROP TABLE IF EXISTS student_badges");
             jdbc.execute("DROP TABLE IF EXISTS badges");

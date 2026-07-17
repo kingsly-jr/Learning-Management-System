@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/me/update")
-    public ResponseEntity<UserDTO> updateCurrentUserProfile(@jakarta.validation.Valid @RequestBody com.lms.backend.dto.RegisterRequest request) {
+    public ResponseEntity<UserDTO> updateCurrentUserProfile(@jakarta.validation.Valid @RequestBody com.lms.backend.dto.UpdateProfileRequest request) {
         String username = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(userService.updateCurrentUser(username, request));
     }

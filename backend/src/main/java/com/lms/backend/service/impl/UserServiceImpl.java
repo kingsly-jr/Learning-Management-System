@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateCurrentUser(String username, com.lms.backend.dto.RegisterRequest request) {
+    public UserDTO updateCurrentUser(String username, com.lms.backend.dto.UpdateProfileRequest request) {
         Optional<Student> studentOpt = studentRepository.findByUsername(username);
         if (studentOpt.isPresent()) {
             Student student = studentOpt.get();

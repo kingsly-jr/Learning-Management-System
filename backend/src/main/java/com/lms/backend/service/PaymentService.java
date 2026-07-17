@@ -111,10 +111,32 @@ public class PaymentService {
             boolean isValid = Utils.verifyPaymentSignature(options, keySecret);
 
             if (isValid) {
-                transaction.setStatus("PAID");
-                transaction.setRazorpayPaymentId(paymentId);
-                transactionRepository.save(transaction);
+                if (!"PAID".equals(transaction.getStatus())) {
+                    transaction.setStatus("PAID");
+                    transaction.setRazorpayPaymentId(paymentId);
+                    transaction.setPaymentMethod("Razorpay");
+                    
+                    if (transaction.getCourse().getInstructor() != null) {
+                        transaction.setInstructorId(transaction.getCourse().getInstructor().getId());
+                    }
+                    
+                    Double coursePrice = transaction.getAmount();
+                    if (coursePrice != null && coursePrice > 0) {
+                        Double gstAmount = Math.round((coursePrice * 18.0 / 100.0) * 100.0) / 100.0;
+                        transaction.setGstAmount(gstAmount);
+                        
+                        Double netRevenue = Math.round((coursePrice - gstAmount) * 100.0) / 100.0;
+                        transaction.setNetRevenue(netRevenue);
+                        
+                        Double adminEarnings = Math.round((netRevenue * 80.0 / 100.0) * 100.0) / 100.0;
+                        transaction.setAdminEarnings(adminEarnings);
+                        
+                        Double instructorEarnings = Math.round((netRevenue - adminEarnings) * 100.0) / 100.0;
+                        transaction.setInstructorEarnings(instructorEarnings);
+                    }
 
+                    transactionRepository.save(transaction);
+                }
                 // Create enrollment
                 Optional<Enrollment> existing = enrollmentRepository.findByStudentIdAndCourseId(
                         transaction.getStudent().getId(), transaction.getCourse().getId());

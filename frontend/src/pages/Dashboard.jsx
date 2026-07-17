@@ -15,21 +15,23 @@ export default function Dashboard({ user, navigate, addToast, currentPage = 'das
     setLoading(true);
     try {
       if (user.role === 'INSTRUCTOR') {
-        const [dashData, instructorCourses] = await Promise.all([
+        const [dashData, instructorCourses, instructorStats] = await Promise.all([
           apiFetch('/instructor/dashboard/data'),
-          apiFetch('/courses')
+          apiFetch('/courses'),
+          apiFetch('/analytics/instructor').catch(() => ({}))
         ]);
         setDashboardData(dashData || {});
-        setStats(dashData?.stats || {});
+        setStats({ ...(dashData?.stats || {}), ...instructorStats });
         setMyCourses(instructorCourses || []);
       } else if (user.role === 'ADMIN') {
-        const [usersList, coursesList, categoriesList, activitiesList, notificationsList, feedbacksList] = await Promise.all([
+        const [usersList, coursesList, categoriesList, activitiesList, notificationsList, feedbacksList, adminStats] = await Promise.all([
           apiFetch('/users'),
           apiFetch('/courses'),
           apiFetch('/categories'),
           apiFetch('/admin/activities').catch(() => []),
           apiFetch('/notifications').catch(() => []),
           apiFetch('/feedbacks/recent').catch(() => []),
+          apiFetch('/analytics/admin').catch(() => ({})),
         ]);
         const numStudents = usersList ? usersList.filter(u => u.role === 'STUDENT').length : 0;
         const numInstructors = usersList ? usersList.filter(u => u.role === 'INSTRUCTOR').length : 0;
@@ -37,7 +39,8 @@ export default function Dashboard({ user, navigate, addToast, currentPage = 'das
           totalStudents: numStudents,
           totalInstructors: numInstructors,
           totalCourses: coursesList ? coursesList.length : 0,
-          totalCategories: categoriesList ? categoriesList.length : 0
+          totalCategories: categoriesList ? categoriesList.length : 0,
+          ...adminStats
         });
         setDashboardData({
           users: usersList || [],

@@ -120,10 +120,20 @@ export default function InstructorDashboardMock({ user, dashboardData, myCourses
           <div className="stat-value">{stats?.totalEnrollments || 0}</div>
           <div className="stat-label">Total Enrollments</div>
         </div>
-        <div className="stat-card" onClick={() => addToast('Detailed earnings page coming soon!', 'info')} style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(168,85,247,0.1), rgba(147,51,234,0.05))', border: '1px solid rgba(168,85,247,0.2)' }}>
+        <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(168,85,247,0.1), rgba(147,51,234,0.05))', border: '1px solid rgba(168,85,247,0.2)' }}>
           <div className="stat-icon">📈</div>
-          <div className="stat-value">₹{(stats?.totalRevenue || 0).toFixed(2)}</div>
+          <div className="stat-value">₹{(stats?.totalEarnings || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           <div className="stat-label">Total Earnings</div>
+        </div>
+        <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(5,150,105,0.05))', border: '1px solid rgba(16,185,129,0.2)' }}>
+          <div className="stat-icon">🌟</div>
+          <div className="stat-value">₹{(stats?.todayEarnings || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className="stat-label">Today's Earnings</div>
+        </div>
+        <div className="stat-card" style={{ background: 'linear-gradient(135deg, rgba(14,165,233,0.1), rgba(2,132,199,0.05))', border: '1px solid rgba(14,165,233,0.2)' }}>
+          <div className="stat-icon">📅</div>
+          <div className="stat-value">₹{(stats?.monthlyEarnings || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className="stat-label">Monthly Earnings</div>
         </div>
         <div className="stat-card" onClick={() => document.getElementById('needs-grading')?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer', background: 'linear-gradient(135deg, rgba(234,179,8,0.1), rgba(202,138,4,0.05))', border: '1px solid rgba(234,179,8,0.2)' }}>
           <div className="stat-icon">📝</div>

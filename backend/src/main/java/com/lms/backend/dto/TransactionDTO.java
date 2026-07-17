@@ -14,6 +14,12 @@ public class TransactionDTO {
     private String status;
     private LocalDateTime createdAt;
 
+    private Double gstAmount;
+    private Double netRevenue;
+    private Double adminEarnings;
+    private Double instructorEarnings;
+    private String paymentMethod;
+
     public TransactionDTO() {}
 
     public TransactionDTO(Transaction transaction) {
@@ -26,6 +32,12 @@ public class TransactionDTO {
         this.amount = transaction.getAmount();
         this.status = transaction.getStatus();
         this.createdAt = transaction.getCreatedAt();
+        
+        this.gstAmount = transaction.getGstAmount();
+        this.netRevenue = transaction.getNetRevenue();
+        this.adminEarnings = transaction.getAdminEarnings();
+        this.instructorEarnings = transaction.getInstructorEarnings();
+        this.paymentMethod = transaction.getPaymentMethod();
     }
 
     public Long getId() { return id; }
@@ -54,4 +66,19 @@ public class TransactionDTO {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Double getGstAmount() { return gstAmount; }
+    public void setGstAmount(Double gstAmount) { this.gstAmount = gstAmount; }
+
+    public Double getNetRevenue() { return netRevenue; }
+    public void setNetRevenue(Double netRevenue) { this.netRevenue = netRevenue; }
+
+    public Double getAdminEarnings() { return adminEarnings; }
+    public void setAdminEarnings(Double adminEarnings) { this.adminEarnings = adminEarnings; }
+
+    public Double getInstructorEarnings() { return instructorEarnings; }
+    public void setInstructorEarnings(Double instructorEarnings) { this.instructorEarnings = instructorEarnings; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 }

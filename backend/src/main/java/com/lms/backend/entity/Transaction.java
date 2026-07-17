@@ -61,4 +61,59 @@ public class Transaction {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    // Revenue Sharing Fields
+    @Column(name = "instructor_id")
+    private Long instructorId;
+
+    @Column(name = "gst_percentage")
+    private Double gstPercentage = 18.0;
+
+    @Column(name = "gst_amount")
+    private Double gstAmount;
+
+    @Column(name = "net_revenue")
+    private Double netRevenue;
+
+    @Column(name = "admin_percentage")
+    private Double adminPercentage = 80.0;
+
+    @Column(name = "admin_earnings")
+    private Double adminEarnings;
+
+    @Column(name = "instructor_percentage")
+    private Double instructorPercentage = 20.0;
+
+    @Column(name = "instructor_earnings")
+    private Double instructorEarnings;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
+    public Long getInstructorId() { return instructorId; }
+    public void setInstructorId(Long instructorId) { this.instructorId = instructorId; }
+
+    public Double getGstPercentage() { return gstPercentage; }
+    public void setGstPercentage(Double gstPercentage) { this.gstPercentage = gstPercentage; }
+
+    public Double getGstAmount() { return gstAmount; }
+    public void setGstAmount(Double gstAmount) { this.gstAmount = gstAmount; }
+
+    public Double getNetRevenue() { return netRevenue; }
+    public void setNetRevenue(Double netRevenue) { this.netRevenue = netRevenue; }
+
+    public Double getAdminPercentage() { return adminPercentage; }
+    public void setAdminPercentage(Double adminPercentage) { this.adminPercentage = adminPercentage; }
+
+    public Double getAdminEarnings() { return adminEarnings; }
+    public void setAdminEarnings(Double adminEarnings) { this.adminEarnings = adminEarnings; }
+
+    public Double getInstructorPercentage() { return instructorPercentage; }
+    public void setInstructorPercentage(Double instructorPercentage) { this.instructorPercentage = instructorPercentage; }
+
+    public Double getInstructorEarnings() { return instructorEarnings; }
+    public void setInstructorEarnings(Double instructorEarnings) { this.instructorEarnings = instructorEarnings; }
+
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 }

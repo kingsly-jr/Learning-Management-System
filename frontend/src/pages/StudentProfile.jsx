@@ -24,6 +24,7 @@ export default function StudentProfile({ user, navigate, addToast }) {
   
   const [loading, setLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -103,6 +104,7 @@ export default function StudentProfile({ user, navigate, addToast }) {
       });
       
       addToast('Profile updated successfully! ✅', 'success');
+      setIsEditing(false);
       loadProfile(); // reload to get any server-side formatting
     } catch (err) {
       addToast(err.message, 'error');
@@ -121,13 +123,21 @@ export default function StudentProfile({ user, navigate, addToast }) {
 
   return (
     <div className="dashboard-content student-profile-page">
-      <div className="section-header" style={{ marginBottom: '24px' }}>
-        <h3>My Profile</h3>
-        <p style={{ color: 'var(--text-muted)' }}>Manage your personal details and account settings</p>
+      <div className="section-header" style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <h3>My Profile</h3>
+          <p style={{ color: 'var(--text-muted)' }}>Manage your personal details and account settings</p>
+        </div>
+        {!isEditing && (
+          <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
+            ✏️ Edit Profile
+          </button>
+        )}
       </div>
 
-      <div className="card" style={{ maxWidth: '800px', margin: '0', padding: '30px' }}>
+      <div className={`card ${!isEditing ? 'read-only-profile' : ''}`} style={{ maxWidth: '800px', margin: '0', padding: '30px' }}>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+          <fieldset disabled={!isEditing} style={{ border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '30px' }}>
           
           {/* Personal Information */}
           <section>
@@ -147,11 +157,15 @@ export default function StudentProfile({ user, navigate, addToast }) {
                   )}
                   <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <input type="text" className="form-input" name="thumbnailUrl" value={formData.thumbnailUrl || ''} onChange={handleChange} placeholder="Image URL..." style={{ flex: 1 }} />
-                      <label className="btn btn-secondary btn-sm" style={{ cursor: 'pointer', margin: 0, display: 'flex', alignItems: 'center' }}>
-                        Upload
-                        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleFileUpload(e, 'thumbnailUrl')} />
-                      </label>
+                      {isEditing && (
+                        <>
+                          <input type="text" className="form-input" name="thumbnailUrl" value={formData.thumbnailUrl || ''} onChange={handleChange} placeholder="Image URL..." style={{ flex: 1 }} />
+                          <label className="btn btn-secondary btn-sm" style={{ cursor: 'pointer', margin: 0, display: 'flex', alignItems: 'center' }}>
+                            Upload
+                            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={(e) => handleFileUpload(e, 'thumbnailUrl')} />
+                          </label>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -242,32 +256,33 @@ export default function StudentProfile({ user, navigate, addToast }) {
             </div>
           </section>
 
-          {/* Account & Security */}
-          <section>
-            <h4 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              🔒 Account & Security
-            </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-              <div className="form-group">
-                <label>Change Password (Leave blank to keep current)</label>
-                <div style={{ position: 'relative' }}>
-                  <input type={showPassword ? 'text' : 'password'} className="form-input" name="password" value={formData.password} onChange={handleChange} minLength="6" style={{ width: '100%', paddingRight: '40px' }} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
-                    {showPassword ? '🙈' : '👁️'}
-                  </button>
+          {isEditing && (
+            <section>
+              <h4 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                🔒 Account & Security
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'end' }}>
+                <div className="form-group">
+                  <label>New Password (Optional)</label>
+                  <div style={{ position: 'relative' }}>
+                    <input type={showPassword ? 'text' : 'password'} className="form-input" name="password" value={formData.password} onChange={handleChange} minLength="6" style={{ width: '100%', paddingRight: '40px' }} />
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Confirm New Password</label>
+                  <div style={{ position: 'relative' }}>
+                    <input type={showConfirmPassword ? 'text' : 'password'} className="form-input" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required={!!formData.password} minLength="6" style={{ width: '100%', paddingRight: '40px' }} />
+                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
+                      {showConfirmPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div className="form-group">
-                <label>Confirm New Password</label>
-                <div style={{ position: 'relative' }}>
-                  <input type={showConfirmPassword ? 'text' : 'password'} className="form-input" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required={!!formData.password} minLength="6" style={{ width: '100%', paddingRight: '40px' }} />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
-                    {showConfirmPassword ? '🙈' : '👁️'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
+          )}
 
           {/* Read-Only Details */}
           <section>
@@ -282,13 +297,16 @@ export default function StudentProfile({ user, navigate, addToast }) {
             </div>
           </section>
 
-          <div className="flex gap-2" style={{ justifyContent: 'flex-end', marginTop: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
-            <button type="button" className="btn btn-secondary" onClick={() => { loadProfile(); navigate('catalog'); }}>Cancel</button>
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? 'Saving...' : '💾 Save Changes'}
-            </button>
-          </div>
+          </fieldset>
 
+          {isEditing && (
+            <div className="flex gap-2" style={{ justifyContent: 'flex-end', marginTop: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
+              <button type="button" className="btn btn-secondary" onClick={() => { setIsEditing(false); loadProfile(); }}>Cancel</button>
+              <button type="submit" className="btn btn-primary" disabled={loading}>
+                {loading ? 'Saving...' : '💾 Save Changes'}
+              </button>
+            </div>
+          )}
         </form>
       </div>
     </div>

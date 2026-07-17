@@ -22,7 +22,7 @@ public class Course {
     @Column(nullable = false)
     private Double price = 0.0;
 
-    @Column(name = "thumbnail_url")
+    @Column(name = "thumbnail_url", columnDefinition = "TEXT")
     private String thumbnailUrl;
 
     @Column(nullable = false)

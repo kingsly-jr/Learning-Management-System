@@ -21,19 +21,22 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final CertificateRepository certificateRepository;
+    private final TransactionRepository transactionRepository;
 
     public AnalyticsServiceImpl(StudentRepository studentRepository,
                                 InstructorRepository instructorRepository,
                                 AdminUserRepository adminUserRepository,
                                 CourseRepository courseRepository,
                                 EnrollmentRepository enrollmentRepository,
-                                CertificateRepository certificateRepository) {
+                                CertificateRepository certificateRepository,
+                                TransactionRepository transactionRepository) {
         this.studentRepository = studentRepository;
         this.instructorRepository = instructorRepository;
         this.adminUserRepository = adminUserRepository;
         this.courseRepository = courseRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.certificateRepository = certificateRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -50,6 +53,21 @@ public class AnalyticsServiceImpl implements AnalyticsService {
         long completedEnrolls = enrollmentRepository.countByProgressPercentageGreaterThanEqual(100.0);
         double overallCompletionRate = totalEnrolls > 0 ? ((double) completedEnrolls / totalEnrolls) * 100 : 0.0;
         dto.setOverallCompletionRate(overallCompletionRate);
+        
+        Double totalSales = transactionRepository.sumTotalCourseSales();
+        dto.setTotalCourseSales(totalSales != null ? totalSales : 0.0);
+        
+        Double totalGst = transactionRepository.sumTotalGstCollected();
+        dto.setTotalGstCollected(totalGst != null ? totalGst : 0.0);
+        
+        Double totalNet = transactionRepository.sumTotalNetRevenue();
+        dto.setTotalNetRevenue(totalNet != null ? totalNet : 0.0);
+        
+        Double adminEarn = transactionRepository.sumTotalAdminEarnings();
+        dto.setTotalPlatformEarnings(adminEarn != null ? adminEarn : 0.0);
+        
+        Double instructorPayout = transactionRepository.sumTotalInstructorPayouts();
+        dto.setTotalInstructorPayout(instructorPayout != null ? instructorPayout : 0.0);
 
         return dto;
     }
@@ -70,6 +88,17 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
         double overallCompletionRate = totalEnrolls > 0 ? ((double) completedEnrolls / totalEnrolls) * 100 : 0.0;
         dto.setOverallCompletionRate(overallCompletionRate);
+        
+        Double totalEarnings = transactionRepository.sumInstructorEarningsByInstructorId(instructor.getId());
+        dto.setTotalEarnings(totalEarnings != null ? totalEarnings : 0.0);
+        
+        java.time.LocalDateTime todayStart = java.time.LocalDate.now().atStartOfDay();
+        Double todayEarnings = transactionRepository.sumInstructorEarningsByInstructorIdSince(instructor.getId(), todayStart);
+        dto.setTodayEarnings(todayEarnings != null ? todayEarnings : 0.0);
+        
+        java.time.LocalDateTime monthStart = java.time.LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        Double monthlyEarnings = transactionRepository.sumInstructorEarningsByInstructorIdSince(instructor.getId(), monthStart);
+        dto.setMonthlyEarnings(monthlyEarnings != null ? monthlyEarnings : 0.0);
 
         return dto;
     }

@@ -23,4 +23,25 @@ public class AdminAnalyticsDTO {
 
     public double getOverallCompletionRate() { return overallCompletionRate; }
     public void setOverallCompletionRate(double overallCompletionRate) { this.overallCompletionRate = overallCompletionRate; }
+
+    private double totalCourseSales;
+    private double totalGstCollected;
+    private double totalNetRevenue;
+    private double totalPlatformEarnings;
+    private double totalInstructorPayout;
+
+    public double getTotalCourseSales() { return totalCourseSales; }
+    public void setTotalCourseSales(double totalCourseSales) { this.totalCourseSales = totalCourseSales; }
+
+    public double getTotalGstCollected() { return totalGstCollected; }
+    public void setTotalGstCollected(double totalGstCollected) { this.totalGstCollected = totalGstCollected; }
+
+    public double getTotalNetRevenue() { return totalNetRevenue; }
+    public void setTotalNetRevenue(double totalNetRevenue) { this.totalNetRevenue = totalNetRevenue; }
+
+    public double getTotalPlatformEarnings() { return totalPlatformEarnings; }
+    public void setTotalPlatformEarnings(double totalPlatformEarnings) { this.totalPlatformEarnings = totalPlatformEarnings; }
+
+    public double getTotalInstructorPayout() { return totalInstructorPayout; }
+    public void setTotalInstructorPayout(double totalInstructorPayout) { this.totalInstructorPayout = totalInstructorPayout; }
 }

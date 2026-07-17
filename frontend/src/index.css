@@ -1221,3 +1221,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   background: var(--accent-blue);
   color: #000;
 }
+
+/* Read-Only Profile Mode */
+.read-only-profile fieldset[disabled] .form-input {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--text-color) !important;
+  padding-left: 0 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+
+.read-only-profile fieldset[disabled] select.form-input {
+  appearance: none;
+}
+
+.read-only-profile fieldset[disabled] textarea.form-input {
+  resize: none;
+  min-height: auto;
+}
