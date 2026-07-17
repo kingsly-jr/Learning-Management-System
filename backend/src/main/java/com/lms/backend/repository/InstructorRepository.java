@@ -9,4 +9,5 @@ public interface InstructorRepository extends JpaRepository<Instructor, Long> {
     Optional<Instructor> findByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
+    boolean existsByPhoneNumber(String phoneNumber);
 }

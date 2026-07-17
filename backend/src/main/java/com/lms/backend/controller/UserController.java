@@ -48,14 +48,14 @@ public class UserController {
     }
 
     @PutMapping("/me/update")
-    public ResponseEntity<UserDTO> updateCurrentUserProfile(@RequestBody com.lms.backend.dto.RegisterRequest request) {
+    public ResponseEntity<UserDTO> updateCurrentUserProfile(@jakarta.validation.Valid @RequestBody com.lms.backend.dto.RegisterRequest request) {
         String username = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(userService.updateCurrentUser(username, request));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDTO> createUser(@RequestBody com.lms.backend.dto.RegisterRequest request) {
+    public ResponseEntity<UserDTO> createUser(@jakarta.validation.Valid @RequestBody com.lms.backend.dto.RegisterRequest request) {
         return ResponseEntity.ok(userService.createUser(request));
     }
 
@@ -68,7 +68,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody com.lms.backend.dto.RegisterRequest request) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @jakarta.validation.Valid @RequestBody com.lms.backend.dto.RegisterRequest request) {
         UserDTO updated = userService.updateUser(id, request);
         return ResponseEntity.ok(updated);
     }

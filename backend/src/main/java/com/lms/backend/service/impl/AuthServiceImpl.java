@@ -58,6 +58,9 @@ public class AuthServiceImpl implements AuthService {
         if (studentRepository.existsByEmail(request.getEmail()) || instructorRepository.existsByEmail(request.getEmail()) || adminUserRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email Address already in use!");
         }
+        if (request.getPhoneNumber() != null && (studentRepository.existsByPhoneNumber(request.getPhoneNumber()) || instructorRepository.existsByPhoneNumber(request.getPhoneNumber()))) {
+            throw new IllegalArgumentException("Phone Number already in use!");
+        }
 
         String roleStr = request.getRole() != null ? request.getRole() : "STUDENT";
         Role role = roleRepository.findByName(roleStr.toUpperCase())

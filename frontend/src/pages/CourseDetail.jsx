@@ -40,9 +40,12 @@ export default function CourseDetail({ courseId, currentParams, user, navigate, 
       setAssignments(assignmentsList || []);
 
       if (user && (user.role === 'STUDENT' || user.role === 'GRADUATE')) {
-        const studentEnrollments = await apiFetch('/student/courses');
-        const activeEnroll = studentEnrollments ? studentEnrollments.find(e => e.id === parseInt(courseId)) : null;
-        setEnrollment(activeEnroll);
+        try {
+          const activeEnroll = await apiFetch(`/student/enrollments/course/${courseId}`);
+          setEnrollment(activeEnroll);
+        } catch (e) {
+          setEnrollment(null);
+        }
       }
     } catch (err) {
       addToast(err.message, 'error');
@@ -321,7 +324,11 @@ export default function CourseDetail({ courseId, currentParams, user, navigate, 
                         <button className="btn btn-secondary btn-sm" onClick={(e) => { e.stopPropagation(); addToast('Please enroll in the course to access lessons.', 'info'); }}>Enroll to Unlock</button>
                       ) : (
                         !isLocked && isEnrolled && !isInstructor && !isAdmin && (
-                          <button className="btn btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); navigate('student-lesson-view', { courseId, lessonId: lesson.id }); }}>Start Lesson</button>
+                          isCompleted ? (
+                            <span style={{ color: '#22c55e', fontSize: '13px', fontWeight: 'bold', padding: '6px 12px', background: 'rgba(34,197,94,0.1)', borderRadius: '6px' }}>✓ Lesson Completed</span>
+                          ) : (
+                            <button className="btn btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); navigate('student-lesson-view', { courseId, lessonId: lesson.id }); }}>Start Lesson</button>
+                          )
                         )
                       )}
                     </div>

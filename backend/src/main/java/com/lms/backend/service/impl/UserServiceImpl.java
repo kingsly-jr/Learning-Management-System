@@ -98,6 +98,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(Long userId, com.lms.backend.dto.RegisterRequest request) {
+        if (request.getUsername() != null) {
+            boolean usernameExists = (studentRepository.existsByUsername(request.getUsername()) && studentRepository.findByUsername(request.getUsername()).get().getId() != userId) ||
+                    (instructorRepository.existsByUsername(request.getUsername()) && instructorRepository.findByUsername(request.getUsername()).get().getId() != userId) ||
+                    (adminUserRepository.existsByUsername(request.getUsername()) && adminUserRepository.findByUsername(request.getUsername()).get().getId() != userId);
+            if (usernameExists) throw new IllegalArgumentException("Username is already taken!");
+        }
+        if (request.getEmail() != null) {
+            boolean emailExists = (studentRepository.existsByEmail(request.getEmail()) && studentRepository.findByEmail(request.getEmail()).get().getId() != userId) ||
+                    (instructorRepository.existsByEmail(request.getEmail()) && instructorRepository.findByEmail(request.getEmail()).get().getId() != userId) ||
+                    (adminUserRepository.existsByEmail(request.getEmail()) && adminUserRepository.findByEmail(request.getEmail()).get().getId() != userId);
+            if (emailExists) throw new IllegalArgumentException("Email Address already in use!");
+        }
+
         if (studentRepository.existsById(userId)) {
             Student student = studentRepository.findById(userId).get();
             if (request.getUsername() != null) student.setUsername(request.getUsername());
@@ -263,6 +276,9 @@ public class UserServiceImpl implements UserService {
         }
         if (studentRepository.existsByEmail(request.getEmail()) || instructorRepository.existsByEmail(request.getEmail()) || adminUserRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email Address already in use!");
+        }
+        if (request.getPhoneNumber() != null && (studentRepository.existsByPhoneNumber(request.getPhoneNumber()) || instructorRepository.existsByPhoneNumber(request.getPhoneNumber()))) {
+            throw new IllegalArgumentException("Phone Number already in use!");
         }
 
         String roleStr = request.getRole() != null ? request.getRole() : "STUDENT";

@@ -4,38 +4,79 @@ import jakarta.validation.constraints.*;
 
 public class RegisterRequest {
     @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
+    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain letters, numbers, and underscores")
     private String username;
 
     @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @Size(max = 255, message = "Email cannot exceed 255 characters")
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@gmail\\.com$", message = "Please enter a valid @gmail.com email address")
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 100, message = "Password must be at least 6 characters")
+    @Size(min = 8, max = 64, message = "Password must be between 8 and 64 characters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$", message = "Password must contain uppercase, lowercase, number, and one of @$!%*?&")
     private String password;
 
     private String role;
 
+    @NotBlank(message = "Full Name is required")
+    @Size(min = 3, max = 100, message = "Full Name must be between 3 and 100 characters")
+    @Pattern(regexp = "^[A-Za-z\\s\\-']+$", message = "Full Name can only contain letters, spaces, hyphens, and apostrophes")
     private String fullName;
+
+    @NotBlank(message = "Phone Number is required")
+    @Pattern(regexp = "^\\d{10}$", message = "Phone Number must be exactly 10 digits")
     private String phoneNumber;
+
+    @Size(max = 100, message = "Professional Title cannot exceed 100 characters")
+    @Pattern(regexp = "^[A-Za-z0-9\\s\\-()]*$", message = "Professional Title contains invalid characters")
     private String professionalTitle;
+    
+    @Pattern(regexp = "^(0-1|1-3|3-5|5-10|10\\+)?$", message = "Invalid experience years")
     private String experienceYears;
+    
+    @Pattern(regexp = "^(Diploma|Bachelor's Degree|Master's Degree|M\\.Tech|MCA|MBA|PhD|Other)?$", message = "Invalid highest qualification")
     private String highestQualification;
+    
+    @Size(max = 1500, message = "Skills cannot exceed 1500 characters")
     private String skills;
+    
+    @Pattern(regexp = "^(https://.*)?$", message = "Portfolio URL must start with https://")
     private String portfolioUrl;
+    
+    @Size(max = 30, message = "Government ID cannot exceed 30 characters")
+    @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Government ID can only contain letters and numbers")
     private String governmentId;
+    
+    @Pattern(regexp = "^(https://.*)?$", message = "Resume URL must start with https://")
     private String resumeUrl;
+    
     private String interestedCategories;
+    
+    @Size(max = 300, message = "Bio cannot exceed 300 characters")
     private String bio;
+    
     private String preferredLanguage;
 
     private String dateOfBirth;
     private String gender;
+    
+    @Size(max = 150, message = "College must not exceed 150 characters")
+    @Pattern(regexp = "^[A-Za-z\\s,.\\-'()]*$", message = "College can only contain letters and basic punctuation")
     private String college;
+    
+    @Size(max = 100, message = "Course must not exceed 100 characters")
+    @Pattern(regexp = "^[A-Za-z\\s\\-]*$", message = "Course can only contain letters, spaces, and hyphens")
     private String course;
+    
+    @Size(max = 100, message = "Department must not exceed 100 characters")
+    @Pattern(regexp = "^[A-Za-z\\s\\-]*$", message = "Department can only contain letters, spaces, and hyphens")
     private String department;
+    
     private String areasOfInterest;
+    
+    @Pattern(regexp = "^(https://.*)?$", message = "Thumbnail URL must start with https://")
     private String thumbnailUrl;
 
     public RegisterRequest() {}

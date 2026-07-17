@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiFetch } from '../utils/api.js';
+import { apiFetch, API_BASE } from '../utils/api.js';
 import DiscussionBoard from '../components/DiscussionBoard.jsx';
 
 export default function StudentLessonView({ courseId, lessonId, user, navigate, addToast }) {
@@ -221,7 +221,7 @@ export default function StudentLessonView({ courseId, lessonId, user, navigate, 
       formData.append('file', file);
 
       const token = localStorage.getItem('lms_token');
-      const uploadRes = await fetch('/api/files/upload', {
+      const uploadRes = await fetch(`${API_BASE}/files/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -229,8 +229,19 @@ export default function StudentLessonView({ courseId, lessonId, user, navigate, 
         body: formData
       });
 
-      if (!uploadRes.ok) throw new Error('File upload failed');
-      const uploadData = await uploadRes.json();
+      const responseText = await uploadRes.text();
+      
+      if (!uploadRes.ok) {
+        throw new Error(`File upload failed (${uploadRes.status}): ${responseText}`);
+      }
+      
+      let uploadData;
+      try {
+        uploadData = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error(`Invalid response from server: ${responseText}`);
+      }
+      
       const fileUrl = uploadData.url;
 
       // 2. Submit the assignment with the real URL

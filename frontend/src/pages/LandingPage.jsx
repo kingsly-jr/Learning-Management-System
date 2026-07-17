@@ -702,10 +702,10 @@ export default function LandingPage({ login, addToast, publicTab, setPublicTab, 
             
             <div className="auth-tabs" style={{ display: 'flex', borderBottom: '1px solid var(--glass-border)', marginBottom: '20px' }}>
               <button className={`auth-tab ${authTab === 'login' ? 'active' : ''}`} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', color: authTab === 'login' ? 'var(--accent-blue)' : 'var(--text-muted)', borderBottom: authTab === 'login' ? '2px solid var(--accent-blue)' : 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setAuthTab('login')}>Sign In</button>
-              <button className={`auth-tab ${authTab === 'register' ? 'active' : ''}`} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', color: authTab === 'register' ? 'var(--accent-blue)' : 'var(--text-muted)', borderBottom: authTab === 'register' ? '2px solid var(--accent-blue)' : 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => setAuthTab('register')}>Register</button>
+              <button className={`auth-tab ${authTab === 'register' ? 'active' : ''}`} style={{ flex: 1, padding: '12px', background: 'none', border: 'none', color: authTab === 'register' ? 'var(--accent-blue)' : 'var(--text-muted)', borderBottom: authTab === 'register' ? '2px solid var(--accent-blue)' : 'none', cursor: 'pointer', fontWeight: 'bold' }} onClick={() => { setShowAuthModal(false); navigate('register'); }}>Register</button>
             </div>
 
-            {authTab === 'login' ? (
+            {authTab === 'login' && (
               <form onSubmit={handleLoginSubmit}>
                 <div className="form-group" style={{ marginBottom: '16px' }}>
                   <label className="form-label">Username</label>
@@ -719,29 +719,6 @@ export default function LandingPage({ login, addToast, publicTab, setPublicTab, 
                   </button>
                 </div>
                 <button type="submit" className="btn btn-primary btn-full" id="login-btn">Sign In</button>
-              </form>
-            ) : (
-              <form onSubmit={handleRegisterSubmit}>
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <label className="form-label">Username</label>
-                  <input type="text" className="form-input" placeholder="Choose a username" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                </div>
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <label className="form-label">Email</label>
-                  <input type="email" className="form-input" placeholder="yourname@domain.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </div>
-                <div className="form-group" style={{ marginBottom: '12px', position: 'relative' }}>
-                  <label className="form-label">Password</label>
-                  <input type={showPassword ? 'text' : 'password'} className="form-input" placeholder="Min. 8 characters" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ paddingRight: '40px' }} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '12px', top: '38px', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '16px' }}>
-                    {showPassword ? '🙈' : '👁️'}
-                  </button>
-                </div>
-                <div className="form-group" style={{ marginBottom: '12px', position: 'relative' }}>
-                  <label className="form-label">Confirm Password</label>
-                  <input type={showPassword ? 'text' : 'password'} className="form-input" placeholder="Re-enter password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required style={{ paddingRight: '40px' }} />
-                </div>
-                <button type="submit" className="btn btn-primary btn-full" id="register-btn" style={{ marginTop: '20px' }}>Sign Up</button>
               </form>
             )}
           </div>
