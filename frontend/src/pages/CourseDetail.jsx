@@ -226,7 +226,7 @@ export default function CourseDetail({ courseId, currentParams, user, navigate, 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px' }}>
           {/* Guest User Actions */}
           {!user && (
-            <button className="btn btn-primary" onClick={() => { addToast('Please register to enroll.', 'info'); window.location.href='/?register=true'; }}>
+            <button className="btn btn-primary" onClick={() => { addToast('Please register to enroll.', 'info'); navigate('register'); }}>
               Enroll Now to Start Learning
             </button>
           )}
@@ -319,7 +319,7 @@ export default function CourseDetail({ courseId, currentParams, user, navigate, 
                         <button className="btn btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); navigate('lesson-workspace', { courseId, lessonId: lesson.id }); }}>View Details</button>
                       )}
                       {!user ? (
-                        <button className="btn btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); addToast('Please register to enroll in this course and start learning.', 'info'); window.location.href='/?register=true'; }}>Login to Enroll</button>
+                        <button className="btn btn-primary btn-sm" onClick={(e) => { e.stopPropagation(); addToast('Please register to enroll in this course and start learning.', 'info'); navigate('register'); }}>Login to Enroll</button>
                       ) : !isEnrolled && !isInstructor && !isAdmin ? (
                         <button className="btn btn-secondary btn-sm" onClick={(e) => { e.stopPropagation(); addToast('Please enroll in the course to access lessons.', 'info'); }}>Enroll to Unlock</button>
                       ) : (
