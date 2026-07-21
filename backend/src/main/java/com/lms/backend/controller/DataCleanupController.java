@@ -17,35 +17,16 @@ public class DataCleanupController {
     @GetMapping
     @Transactional
     public String cleanupDb() {
-        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
-        
-        String[] tables = {
-            "assignments",
-            "assignment_submissions",
-            "certificates",
-            "courses",
-            "enrollments",
-            "instructors",
-            "lessons",
-            "notifications",
-            "options",
-            "questions",
-            "quizzes",
-            "quiz_attempts",
-            "students",
-            "users"
-        };
-
-        for (String table : tables) {
-            try {
-                entityManager.createNativeQuery("TRUNCATE TABLE " + table).executeUpdate();
-            } catch (Exception e) {
-                // Ignore if table doesn't exist
-            }
+        try {
+            entityManager.createNativeQuery(
+                "TRUNCATE TABLE admin_activity_logs, assignment_submissions, assignments, " +
+                "categories, certificates, courses, discussion_replies, discussion_threads, enrollments, " +
+                "feedbacks, instructors, lessons, live_classes, notifications, options, questions, " +
+                "quiz_attempts, quizzes, students, transactions, activity_logs RESTART IDENTITY CASCADE"
+            ).executeUpdate();
+            return "✅ Database successfully cleaned up! All tables truncated and sequence IDs reset to 1. (admin_users & roles preserved)";
+        } catch (Exception e) {
+            return "❌ Error cleaning database: " + e.getMessage();
         }
-        
-        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-
-        return "Database successfully truncated (excluding admin_users, roles, and categories).";
     }
 }

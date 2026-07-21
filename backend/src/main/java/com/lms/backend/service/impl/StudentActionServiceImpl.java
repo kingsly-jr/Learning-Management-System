@@ -142,6 +142,21 @@ public class StudentActionServiceImpl implements StudentActionService {
             enrollment.setProgressPercentage(progress);
         }
 
+        // Generate Certificate if 100% completed
+        if (enrollment.getProgressPercentage() >= 100.0 && !enrollment.getCertificateGenerated()) {
+            enrollment.setCertificateGenerated(true);
+            enrollment.setCompletedAt(LocalDateTime.now());
+            
+            Certificate certificate = new Certificate();
+            certificate.setEnrollment(enrollment);
+            certificate.setStudent(student);
+            certificate.setCourse(enrollment.getCourse());
+            certificate.setCertificateCode("CERT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+            certificateRepository.save(certificate);
+            
+            // Optional: Send notification or email
+        }
+
         enrollmentRepository.save(enrollment);
         return new EnrollmentDTO(enrollment);
     }
@@ -156,6 +171,20 @@ public class StudentActionServiceImpl implements StudentActionService {
         }
 
         enrollment.setProgressPercentage(Math.min(100.0, Math.max(0.0, progress)));
+        
+        // Generate Certificate if 100% completed
+        if (enrollment.getProgressPercentage() >= 100.0 && !enrollment.getCertificateGenerated()) {
+            enrollment.setCertificateGenerated(true);
+            enrollment.setCompletedAt(LocalDateTime.now());
+            
+            Certificate certificate = new Certificate();
+            certificate.setEnrollment(enrollment);
+            certificate.setStudent(enrollment.getStudent());
+            certificate.setCourse(enrollment.getCourse());
+            certificate.setCertificateCode("CERT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+            certificateRepository.save(certificate);
+        }
+
         enrollmentRepository.save(enrollment);
         return new EnrollmentDTO(enrollment);
     }

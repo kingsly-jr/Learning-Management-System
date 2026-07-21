@@ -64,22 +64,8 @@ public class AppDatabaseInitializer implements CommandLineRunner {
         System.out.println("=================================================");
         System.out.println("⚡ AppDatabaseInitializer starting...");
 
-        try {
-            java.io.File flag = new java.io.File("db_wiped.flag");
-            if (!flag.exists()) {
-                System.out.println("⚠️ EXECUTING ONE-TIME DATABASE WIPE AND SEQUENCE RESET...");
-                jdbc.execute("TRUNCATE TABLE admin_activity_logs, admin_users, assignment_submissions, assignments, " +
-                             "categories, certificates, courses, discussion_replies, discussion_threads, enrollments, " +
-                             "feedbacks, instructors, lessons, live_classes, notifications, options, questions, " +
-                             "quiz_attempts, quizzes, roles, students, transactions, activity_logs RESTART IDENTITY CASCADE");
-                System.out.println("✅ DATABASE WIPED AND SEQUENCES RESET TO 1");
-                flag.createNewFile();
-            } else {
-                System.out.println("⚡ Skipping one-time DB wipe (db_wiped.flag exists).");
-            }
-        } catch (Exception e) {
-            System.out.println("⚡ Note (Truncate): " + e.getMessage());
-        }
+        // ⚠️ REMOVED: The one-time database wipe and sequence reset block has been safely removed.
+        // Since Render uses an ephemeral file system, keeping it would have wiped your database on every restart!
 
         try {
             jdbc.execute("ALTER TABLE courses ALTER COLUMN thumbnail_url TYPE TEXT");
