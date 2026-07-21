@@ -15,6 +15,10 @@ public class EnrollmentDTO {
     private Boolean certificateGenerated;
     private Set<Long> completedLessonIds;
 
+    private String categoryName;
+    private String instructorName;
+    private LocalDateTime completedAt;
+
     public EnrollmentDTO() {}
 
     public EnrollmentDTO(Enrollment enrollment) {
@@ -23,10 +27,15 @@ public class EnrollmentDTO {
         this.studentName = enrollment.getStudent() != null ? enrollment.getStudent().getUsername() : "Deleted Student";
         this.courseId = enrollment.getCourse() != null ? enrollment.getCourse().getId() : null;
         this.courseTitle = enrollment.getCourse() != null ? enrollment.getCourse().getTitle() : "Deleted Course";
+        this.categoryName = (enrollment.getCourse() != null && enrollment.getCourse().getCategory() != null) 
+                            ? enrollment.getCourse().getCategory().getName() : "Uncategorized";
+        this.instructorName = (enrollment.getCourse() != null && enrollment.getCourse().getInstructor() != null) 
+                              ? enrollment.getCourse().getInstructor().getUsername() : "Unknown Instructor";
         this.enrolledAt = enrollment.getEnrolledAt();
         this.progressPercentage = enrollment.getProgressPercentage();
         this.certificateGenerated = enrollment.getCertificateGenerated();
         this.completedLessonIds = enrollment.getCompletedLessonIds();
+        this.completedAt = enrollment.getCompletedAt();
     }
 
     public Long getId() { return id; }
@@ -47,4 +56,10 @@ public class EnrollmentDTO {
     public void setCertificateGenerated(Boolean certificateGenerated) { this.certificateGenerated = certificateGenerated; }
     public Set<Long> getCompletedLessonIds() { return completedLessonIds; }
     public void setCompletedLessonIds(Set<Long> completedLessonIds) { this.completedLessonIds = completedLessonIds; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getInstructorName() { return instructorName; }
+    public void setInstructorName(String instructorName) { this.instructorName = instructorName; }
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
 }

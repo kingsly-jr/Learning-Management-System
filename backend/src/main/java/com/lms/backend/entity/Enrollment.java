@@ -34,6 +34,9 @@ public class Enrollment {
     @Column(name = "certificate_generated", nullable = false)
     private Boolean certificateGenerated = false;
 
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "enrollment_completed_lessons", joinColumns = @JoinColumn(name = "enrollment_id"))
     @Column(name = "lesson_id")
@@ -65,4 +68,6 @@ public class Enrollment {
     public void setCertificateGenerated(Boolean certificateGenerated) { this.certificateGenerated = certificateGenerated; }
     public Set<Long> getCompletedLessonIds() { return completedLessonIds; }
     public void setCompletedLessonIds(Set<Long> completedLessonIds) { this.completedLessonIds = completedLessonIds; }
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
 }

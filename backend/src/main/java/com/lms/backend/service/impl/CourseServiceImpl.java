@@ -195,6 +195,15 @@ public class CourseServiceImpl implements CourseService {
             course.setInstructor(newInstructor);
         }
 
+        if (isAdmin(username) && courseDTO.getReviewStatus() != null) {
+            course.setReviewStatus(courseDTO.getReviewStatus());
+            if ("APPROVED".equals(courseDTO.getReviewStatus())) {
+                course.setPublished(true);
+            } else if ("DRAFT".equals(courseDTO.getReviewStatus()) || "REJECTED".equals(courseDTO.getReviewStatus())) {
+                course.setPublished(false);
+            }
+        }
+
         courseRepository.save(course);
         return new CourseDTO(course);
     }

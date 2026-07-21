@@ -82,21 +82,6 @@ export default function AdminLogin({ login, addToast }) {
           </button>
         </form>
 
-        <div style={{ marginTop: '20px', textAlign: 'center' }}>
-          <details style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-            <summary style={{ cursor: 'pointer', outline: 'none', userSelect: 'none' }}>Show Demo Credentials</summary>
-            <div style={{ marginTop: '10px' }}>
-              <button 
-                type="button" 
-                className="btn btn-secondary btn-sm" 
-                style={{ width: '100%' }}
-                onClick={() => { setUsername('kingsly'); setPassword('pass@123'); }}
-              >
-                Auto-fill Demo Admin (kingsly)
-              </button>
-            </div>
-          </details>
-        </div>
 
         <a href="/" className="text-muted" style={{ display: 'block', marginTop: '24px', textAlign: 'center', fontSize: '13px', textDecoration: 'none' }}>
           ← Back to Homepage

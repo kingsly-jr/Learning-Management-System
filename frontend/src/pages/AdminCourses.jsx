@@ -21,7 +21,8 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
     price: 0,
     thumbnailUrl: '',
     categoryId: '',
-    instructorId: ''
+    instructorId: '',
+    reviewStatus: ''
   };
   const [formData, setFormData] = useState(initialFormState);
 
@@ -63,8 +64,8 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
     setFormData(prev => ({ ...prev, [id]: value }));
   };
 
-  const handleFormSubmit = async (e, isDraft = false) => {
-    e.preventDefault();
+  const handleFormSubmit = async (e, isDraft = false, isPublish = false) => {
+    if (e && e.preventDefault) e.preventDefault();
     if (!formData.categoryId) return addToast('Please select a category', 'error');
     if (!formData.instructorId) return addToast('Please select an instructor', 'error');
 
@@ -80,13 +81,17 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
       
       if (isDraft === true) {
         payload.reviewStatus = 'DRAFT';
+      } else if (isPublish === true) {
+        payload.reviewStatus = 'APPROVED';
+      } else if (editingCourseId) {
+        payload.reviewStatus = formData.reviewStatus;
       }
 
       await apiFetch(endpoint, {
         method: method,
         body: JSON.stringify(payload)
       });
-      addToast(editingCourseId ? 'Course updated successfully! 🚀' : (isDraft === true ? 'Course saved as draft! 🚀' : 'Course created and published successfully! 🚀'), 'success');
+      addToast(editingCourseId ? (isPublish ? 'Course published successfully! 🚀' : 'Course updated successfully! 🚀') : (isDraft === true ? 'Course saved as draft! 🚀' : 'Course created and published successfully! 🚀'), 'success');
       setShowModal(false);
       setFormData(initialFormState);
       setEditingCourseId(null);
@@ -151,7 +156,8 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
       price: c.price || 0,
       thumbnailUrl: c.thumbnailUrl || '',
       categoryId: c.categoryId || '',
-      instructorId: c.instructorId || ''
+      instructorId: c.instructorId || '',
+      reviewStatus: c.reviewStatus || 'DRAFT'
     });
     setEditingCourseId(c.id);
     setShowModal(true);
@@ -251,7 +257,7 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
               <h3>{editingCourseId ? 'Update Course' : 'Create & Assign Course'}</h3>
               <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             </div>
-            <form onSubmit={handleFormSubmit} className="modal-body">
+            <form onSubmit={(e) => handleFormSubmit(e, false, false)} className="modal-body">
               <div className="form-group mb-3">
                 <label className="form-label">Course Title *</label>
                 <input id="title" className="form-input" placeholder="e.g. Advanced React" value={formData.title} onChange={handleFormChange} required />
@@ -300,8 +306,13 @@ export default function AdminCourses({ currentParams, navigate, addToast, fetchN
               <div className="modal-footer" style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
                 {!editingCourseId && (
-                  <button type="button" className="btn btn-secondary" onClick={(e) => handleFormSubmit(e, true)} disabled={isSubmitting}>
+                  <button type="button" className="btn btn-secondary" onClick={(e) => handleFormSubmit(e, true, false)} disabled={isSubmitting}>
                     Save as Draft
+                  </button>
+                )}
+                {editingCourseId && formData.reviewStatus !== 'APPROVED' && (
+                  <button type="button" className="btn btn-success" onClick={(e) => handleFormSubmit(e, false, true)} disabled={isSubmitting}>
+                    Update & Publish
                   </button>
                 )}
                 <button type="submit" className="btn btn-primary" disabled={isSubmitting}>

@@ -168,26 +168,6 @@ export default function InstructorLogin({ login, addToast }) {
           </form>
         )}
 
-        {tab === 'login' && instructorsList.length > 0 && (
-          <div style={{ marginTop: '20px', textAlign: 'center' }}>
-            <details style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-              <summary style={{ cursor: 'pointer', outline: 'none', userSelect: 'none' }}>Show Demo Credentials</summary>
-              <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {instructorsList.map(inst => (
-                  <button 
-                    key={inst}
-                    type="button" 
-                    className="btn btn-secondary btn-sm" 
-                    style={{ width: '100%' }}
-                    onClick={() => { setUsername(inst); setPassword('pass@123'); }}
-                  >
-                    Auto-fill {inst}
-                  </button>
-                ))}
-              </div>
-            </details>
-          </div>
-        )}
 
         <a href="/" className="text-muted" style={{ display: 'block', marginTop: '24px', textAlign: 'center', fontSize: '13px', textDecoration: 'none' }}>
           ← Back to Homepage

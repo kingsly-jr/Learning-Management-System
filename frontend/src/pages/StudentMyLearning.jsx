@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '../utils/api.js';
+import CertificateGenerator from '../components/CertificateGenerator.jsx';
 
 export default function StudentMyLearning({ user, navigate, addToast }) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [certEnrollment, setCertEnrollment] = useState(null); // null = hidden
 
   useEffect(() => {
     const load = async () => {
@@ -80,15 +82,42 @@ export default function StudentMyLearning({ user, navigate, addToast }) {
 
                   <button
                     className={`btn ${isCompleted ? 'btn-secondary' : 'btn-primary'} btn-sm btn-full`}
-                    onClick={(e) => { e.stopPropagation(); navigate('course-detail', { courseId: c.id }); }}
+                    style={{ marginBottom: isCompleted ? '8px' : '0' }}
+                    onClick={(e) => { e.stopPropagation(); navigate('course-detail', { courseId: c.courseId || c.id }); }}
                   >
                     {isCompleted ? '🏅 Review Course' : '▶ Continue Learning'}
                   </button>
+
+                  {isCompleted && (
+                    <button
+                      className="btn btn-primary btn-sm btn-full"
+                      style={{
+                        background: 'linear-gradient(135deg, #c8960c, #f5c518)',
+                        color: '#000',
+                        fontWeight: '700',
+                        border: 'none',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCertEnrollment(c);
+                      }}
+                    >
+                      🎓 Download Certificate
+                    </button>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {/* Certificate Modal */}
+      {certEnrollment && (
+        <CertificateGenerator
+          enrollment={certEnrollment}
+          onClose={() => setCertEnrollment(null)}
+        />
       )}
     </div>
   );
