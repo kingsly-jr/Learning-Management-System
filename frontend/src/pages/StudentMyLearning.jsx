@@ -116,6 +116,7 @@ export default function StudentMyLearning({ user, navigate, addToast }) {
       {certEnrollment && (
         <CertificateGenerator
           enrollment={certEnrollment}
+          user={user}
           onClose={() => setCertEnrollment(null)}
         />
       )}

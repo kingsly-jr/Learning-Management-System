@@ -16,16 +16,16 @@ function loadFonts() {
   }
 }
 
-export default function CertificateGenerator({ enrollment, onClose }) {
+export default function CertificateGenerator({ enrollment, user, onClose }) {
   const certRef = useRef(null);
   const [downloading, setDownloading] = useState(false);
 
   loadFonts();
 
-  // Pull data from enrollment object
-  const studentName  = enrollment?.studentName  || 'Student Name';
-  const courseTitle  = enrollment?.courseTitle   || 'Course Title';
-  const categoryName = enrollment?.categoryName  || 'Uncategorized';
+  // Pull data from enrollment/course object and user object
+  const studentName  = enrollment?.studentName || user?.username || user?.sub || 'Student Name';
+  const courseTitle  = enrollment?.courseTitle || enrollment?.title || 'Course Title';
+  const categoryName = enrollment?.categoryName || 'Uncategorized';
   const instructorName = enrollment?.instructorName || 'Instructor';
   const completedAt  = enrollment?.completedAt
     ? new Date(enrollment.completedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -99,7 +99,7 @@ export default function CertificateGenerator({ enrollment, onClose }) {
           fontSize: '62px',
           color: '#c8960c',
           whiteSpace: 'nowrap',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.15)',
+          textShadow: '1px 1px 2px rgba(0,0,0,0.4)',
           letterSpacing: '1px',
         }}>
           {studentName}
@@ -113,7 +113,7 @@ export default function CertificateGenerator({ enrollment, onClose }) {
           transform: 'translate(-50%, -50%)',
           fontFamily: "'Inter', 'Segoe UI', sans-serif",
           fontSize: '15.5px',
-          color: '#1a1a1a',
+          color: '#e0e0e0', // Light text for dark background
           textAlign: 'center',
           lineHeight: '1.7',
           width: '580px',
@@ -127,18 +127,56 @@ export default function CertificateGenerator({ enrollment, onClose }) {
           <strong style={{ color: '#c8960c' }}>{completedAt}</strong>.
         </div>
 
-        {/* ── Instructor Signature (Great Vibes font) ── */}
+        {/* ── Instructor Signature Block (Left) ── */}
         <div style={{
           position: 'absolute',
-          top: '79%',
+          top: '77%',
           left: '26%',
           transform: 'translate(-50%, -50%)',
-          fontFamily: "'Great Vibes', cursive",
-          fontSize: '36px',
-          color: '#1a1a1a',
-          whiteSpace: 'nowrap',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '220px',
         }}>
-          {instructorName}
+          <div style={{
+            fontFamily: "'Great Vibes', cursive",
+            fontSize: '36px',
+            color: '#ffffff',
+            whiteSpace: 'nowrap',
+            marginBottom: '4px'
+          }}>
+            {instructorName}
+          </div>
+          <div style={{ width: '100%', height: '2px', backgroundColor: '#a3a3a3', marginBottom: '10px' }} />
+          <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", fontSize: '15px', color: '#a3a3a3' }}>
+            Course Instructor
+          </div>
+        </div>
+
+        {/* ── Director of Learning Block (Right) ── */}
+        <div style={{
+          position: 'absolute',
+          top: '77%',
+          left: '74%',
+          transform: 'translate(-50%, -50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '220px',
+        }}>
+          <div style={{
+            fontFamily: "'Great Vibes', cursive",
+            fontSize: '36px',
+            color: '#ffffff',
+            whiteSpace: 'nowrap',
+            marginBottom: '4px'
+          }}>
+            Kingsly
+          </div>
+          <div style={{ width: '100%', height: '2px', backgroundColor: '#a3a3a3', marginBottom: '10px' }} />
+          <div style={{ fontFamily: "'Inter', 'Segoe UI', sans-serif", fontSize: '15px', color: '#a3a3a3' }}>
+            Director of Learning
+          </div>
         </div>
       </div>
 
